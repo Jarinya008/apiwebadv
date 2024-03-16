@@ -477,7 +477,7 @@ router.delete("/", (req, res) => {
 
 
 
-router.get('/get/diff', (req, res) => {
+router.get('/look/diff', (req, res) => {
   // ดึงข้อมูลรูปภาพและคะแนนก่อนการโหวตของวันก่อนหน้า
   const sqlBefore = 'SELECT * FROM vote WHERE day = CURDATE() - INTERVAL 1 DAY ORDER BY score_day DESC ';
   conn.query({sql: sqlBefore, timeout: 60000}, (err, beforeResults) => {
