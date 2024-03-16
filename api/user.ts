@@ -297,7 +297,7 @@ lastSevenDaysDate.setDate(lastSevenDaysDate.getDate() - 7);
 
 const query: string = `
              SELECT image.id_image, image.date, image.score_image, image.url_image, image.name_image, vote.day, vote.score_day
-             FROM vote,image
+             FROM vote
              INNER JOIN image ON vote.id_image = image.id_image 
              WHERE vote.day >= ? AND image.username = ? 
              ORDER BY image.id_image, vote.day`;
