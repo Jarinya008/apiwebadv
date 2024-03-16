@@ -301,7 +301,7 @@ lastSevenDaysDate.setDate(lastSevenDaysDate.getDate() - 7);
 //              INNER JOIN image ON vote.id_image = image.id_image 
 //              WHERE vote.day >= ? AND image.username = ? 
 //              ORDER BY image.id_image, vote.day`;
-const query: string ="SELECT * FROM vote JOIN image ON vote.id_image = image.id_image JOIN user ON image.username = user.username where user.username = ? and day = ? ORDER BY image.id_image, vote.day";
+const query: string ="SELECT * FROM vote JOIN image ON vote.id_image = image.id_image JOIN user ON image.username = user.username where user.username = ? and image.day = ? ORDER BY image.id_image, vote.day";
              
 conn.query(query, [username,lastSevenDaysDate], (err: any, results: any) => {
     if (err) {
