@@ -293,32 +293,28 @@ router.get("/score/seven",(req,res) =>{
 
 
   try {
-    const username = req.query.username;
-    // หาวันที่ 7 วันที่ผ่านมา
-    const lastSevenDays: Date = new Date();
-    lastSevenDays.setDate(lastSevenDays.getDate() - 7);
+    const username: string = (req.params as { username: string }).username;
+    const lastSevenDaysDate: Date = new Date();
+    lastSevenDaysDate.setDate(lastSevenDaysDate.getDate() - 7);
     
-    // ดึงข้อมูล Score ของรูปภาพที่ผู้ใช้มีส่วนร่วมในช่วง 7 วันที่ผ่านมา
     const query: string = `
-                 SELECT image.id_image, image.date, image.score_image,image.url_image,image.name_image, user.username, vote.day, vote.score_day
+                 SELECT image.id_image, image.date, image.score_image, image.url_image, image.name_image, user.username, vote.day, vote.score_day
                  FROM vote 
                  INNER JOIN image ON vote.id_image = image.id_image 
                  INNER JOIN user ON image.username = user.username
                  WHERE vote.day >= ? AND user.username = ? 
                  ORDER BY image.id_image, vote.day`;
-    conn.query(query, [lastSevenDays, username], (err: any, results: any) => {
+    conn.query(query, [lastSevenDaysDate, username], (err: any, results: any) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: 'Error fetching votes' });
         }
-        // สร้างอาร์เรย์เพื่อเก็บผลลัพธ์ที่แยกตามรูปภาพ
+        
         const imageStatistics: any[] = [];
         let currentImage: any = null;
-        // ลูปผลลัพธ์ที่ได้จากคำสั่ง SQL
+        
         for (const row of results) {
-            // ถ้ารูปภาพปัจจุบันไม่มีข้อมูลหรือมี ID รูปภาพใหม่
             if (!currentImage || currentImage.id_image !== row.id_image) {
-                // สร้างข้อมูลรูปภาพใหม่
                 currentImage = {
                     id_image: row.id_image,
                     date: row.date,
@@ -326,23 +322,21 @@ router.get("/score/seven",(req,res) =>{
                     username: row.username,
                     url_image: row.url_image,
                     name_image: row.name_image,
-                    vote: [] // สร้างอาร์เรย์เพื่อเก็บข้อมูลของวันที่โหวตและคะแนน
+                    vote: [] 
                 };
-                // เพิ่มข้อมูลรูปภาพใหม่เข้าไปในอาร์เรย์
                 imageStatistics.push(currentImage);
             }
-            // เพิ่มข้อมูลวันที่โหวตและคะแนนลงในอาร์เรย์ของรูปภาพปัจจุบัน
-            currentImage.Votes.push({ day: row.day, score_day: row.score_day });
+            currentImage.vote.push({ day: row.day, score_day: row.score_day });
         }
-        // ส่งข้อมูลอาร์เรย์ที่ได้กลับไป
         console.log(imageStatistics);
-        
         res.json(imageStatistics);
     });
 } catch (error) {
     console.error("Error fetching image statistics:", error);
     res.status(500).json({ error: "Failed to fetch image statistics" });
 }
+
+
 });
 
 
