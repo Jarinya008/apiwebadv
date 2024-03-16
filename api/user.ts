@@ -299,6 +299,7 @@ router.get("/score/seven",(req,res) =>{
   const yesterdayMonth = yesterday.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
   const yesterdayYear = yesterday.getFullYear();
   const formattedYesterday = `${yesterdayYear}-${yesterdayMonth}-${yesterdayDay}`;
+console.log(formattedYesterday);
 
 // const query: string = `
 //              SELECT image.id_image, image.date, image.score_image, image.url_image, image.name_image, vote.day, vote.score_day
