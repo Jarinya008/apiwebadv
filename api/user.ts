@@ -292,14 +292,8 @@ router.get("/score/seven",(req,res) =>{
 
     const username=req.query.username;
     console.log(username);
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 7);
-  const yesterdayDay = yesterday.getDate();
-  console.log(yesterdayDay);
-  const yesterdayMonth = yesterday.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
-  const yesterdayYear = yesterday.getFullYear();
-  const formattedYesterday = `${yesterdayYear}-${yesterdayMonth}-${yesterdayDay}`;
-console.log(formattedYesterday);
+const lastSevenDaysDate: Date = new Date();
+lastSevenDaysDate.setDate(lastSevenDaysDate.getDate() - 7);
 
 // const query: string = `
 //              SELECT image.id_image, image.date, image.score_image, image.url_image, image.name_image, vote.day, vote.score_day
@@ -307,7 +301,7 @@ console.log(formattedYesterday);
 //              INNER JOIN image ON vote.id_image = image.id_image 
 //              WHERE vote.day >= ? AND image.username = ? 
 //              ORDER BY image.id_image, vote.day`;
-const query: string ="SELECT * FROM vote JOIN image ON vote.id_image = image.id_image JOIN user ON image.username = user.username where user.username = ? ORDER BY image.id_image, vote.day";
+const query: string ="SELECT * FROM vote JOIN image ON vote.id_image = image.id_image JOIN user ON image.username = user.username where user.username = ? ORDER BY image.id_image,vote.day";
              
 conn.query(query, [username], (err: any, results: any) => {
     if (err) {
