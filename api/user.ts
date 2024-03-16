@@ -307,9 +307,9 @@ console.log(formattedYesterday);
 //              INNER JOIN image ON vote.id_image = image.id_image 
 //              WHERE vote.day >= ? AND image.username = ? 
 //              ORDER BY image.id_image, vote.day`;
-const query: string ="SELECT * FROM vote JOIN image ON vote.id_image = image.id_image JOIN user ON image.username = user.username where user.username = ? and image.day >= ? ORDER BY image.id_image, vote.day";
+const query: string ="SELECT * FROM vote JOIN image ON vote.id_image = image.id_image JOIN user ON image.username = user.username where user.username = ? ORDER BY image.id_image, vote.day";
              
-conn.query(query, [username,formattedYesterday], (err: any, results: any) => {
+conn.query(query, [username], (err: any, results: any) => {
     if (err) {
         console.error(err);
         return res.status(500).json({ error: 'Error fetching votes' });
