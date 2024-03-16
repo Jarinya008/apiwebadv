@@ -290,10 +290,8 @@ router.get("/score/seven",(req,res) =>{
 
 
 
-
-
-  try {
-    const username: string = (req.params as { username: string }).username;
+    const username=req.query.username;
+    console.log(username);
 const lastSevenDaysDate: Date = new Date();
 lastSevenDaysDate.setDate(lastSevenDaysDate.getDate() - 7);
 
@@ -329,11 +327,6 @@ conn.query(query, [lastSevenDaysDate, username], (err: any, results: any) => {
     console.log(imageStatistics);
     res.json(imageStatistics);
 });
-
-} catch (error) {
-    console.error("Error fetching image statistics:", error);
-    res.status(500).json({ error: "Failed to fetch image statistics" });
-}
 
 
 });
