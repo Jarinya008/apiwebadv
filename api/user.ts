@@ -476,3 +476,39 @@ router.delete("/", (req, res) => {
 
 
 
+
+router.get('/get/diff', (req, res) => {
+  // ดึงข้อมูลรูปภาพและคะแนนก่อนการโหวตของวันก่อนหน้า
+  const sqlBefore = 'SELECT * FROM vote WHERE day = CURDATE() - INTERVAL 1 DAY ORDER BY score_day DESC ';
+  conn.query({sql: sqlBefore, timeout: 60000}, (err, beforeResults) => {
+      if (err) {
+          console.error(err);
+          return res.status(500).json({ error: 'Error fetching photos for the previous day' });
+      }
+
+      // ดึงข้อมูลรูปภาพและคะแนนหลังการโหวตของวันปัจจุบัน
+      const sqlAfter = 'SELECT * FROM vote WHERE day = CURDATE() ORDER BY score_day DESC LIMIT 10';
+      conn.query({sql: sqlAfter, timeout: 60000}, (err, afterResults) => {
+          if (err) {
+              console.error(err);
+              return res.status(500).json({ error: 'Error fetching photos for the current day' });
+          }
+
+          // คำนวณหาความแตกต่างในอันดับระหว่างวันก่อนหน้าและวันปัจจุบัน
+          const rankingsDiff: { id_image: any; score_day: number; diff: number | null; rank_previous: number; rank_current: number }[] = [];
+          afterResults.forEach((afterItem: { id_image: any; score_day: number; }, index: number) => {
+              const beforeIndex = beforeResults.findIndex((item: { id_image: any; }) => item.id_image === afterItem.id_image);
+              const rank_previous = beforeIndex !== -1 ? beforeIndex + 1 : null;
+              const rank_current = index + 1;
+              const diff = rank_previous !== null ? rank_previous - rank_current : null;
+              rankingsDiff.push({ id_image: afterItem.id_image, score_day: afterItem.score_day, diff, rank_previous, rank_current });
+          });
+          console.log(rankingsDiff);
+          res.json(rankingsDiff);
+      });
+  });
+});
+
+
+
+
