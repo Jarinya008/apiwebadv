@@ -146,7 +146,7 @@ console.log(formattedYesterday);
 
 router.get("/topten/today",(req,res) => {
   const currentDate = new Date();
-  const day = currentDate.getDate()+1;
+  const day = currentDate.getDate();
   const month = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
   const year = currentDate.getFullYear();
   const formattedDate = `${year}-${month}-${day}`;
@@ -159,8 +159,8 @@ router.get("/topten/today",(req,res) => {
   const yesterdayYear = yesterday.getFullYear();
   const formattedYesterday = `${yesterdayYear}-${yesterdayMonth}-${yesterdayDay}`;
 
-  const sql = "SELECT * FROM vote,image where vote.day = ? AND vote.id_image = image.id_image ORDER BY vote.score_day DESC LIMIT 10";
-  conn.query(sql,[formattedDate],(err, result)=>{
+  const sql = "SELECT * FROM vote,image where vote.day = CURDATE() AND vote.id_image = image.id_image ORDER BY vote.score_day DESC LIMIT 10";
+  conn.query(sql,(err, result)=>{
     if (err) {
       res.status(500).json({ error: "An error occurred while processing your request" });
       return;
