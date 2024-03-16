@@ -150,46 +150,7 @@ router.get("/topten/today",(req,res) => {
   const month = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
   const year = currentDate.getFullYear();
   const formattedDate = `${year}-${month}-${day}`;
-  console.log(formattedDate);
-  
-  const sql = "SELECT * FROM vote where day = ? ORDER BY score_day DESC LIMIT 10";
-  conn.query(sql,[formattedDate],(err, result)=>{
-    if (err) {
-      res.status(500).json({ error: "An error occurred while processing your request" });
-      return;
-    }
 
-    const imagePromises = result.map((row: { id_image: any; }) => {
-      return new Promise((resolve, reject) => {
-        const imageSql = "SELECT * FROM image WHERE id_image = ?";
-        conn.query(imageSql, [row.id_image], (imageErr, imageResult) => {
-          if (imageErr) {
-            reject(imageErr);
-            return;
-          }
-          resolve(imageResult);
-        });
-      });
-    });
-
-    Promise.all(imagePromises)
-      .then(imageResults => {
-        const finalResult = result.map((row: any, index: number) => {
-          return {
-            ...row,
-            image: imageResults[index]
-          };
-        });
-        res.json(finalResult);
-      })
-      .catch(err => {
-        res.status(500).json({ error: "An error occurred while processing your request" });
-      });
-  });
-});
-
-router.get("/score/seven",(req,res) =>{
-  const username = req.query.username;
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 7);
   const yesterdayDay = yesterday.getDate();
@@ -198,22 +159,136 @@ router.get("/score/seven",(req,res) =>{
   const yesterdayYear = yesterday.getFullYear();
   const formattedYesterday = `${yesterdayYear}-${yesterdayMonth}-${yesterdayDay}`;
 
-const currentDate = new Date();
-const day = currentDate.getDate();
-const month = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
-const year = currentDate.getFullYear();
-const formattedDate = `${year}-${month}-${day}`;
-console.log(formattedDate);
+  const sql = "SELECT * FROM vote,image where vote.day = ? AND vote.id_image = image.id_image ORDER BY vote.score_day DESC LIMIT 10";
+  conn.query(sql,[formattedDate],(err, result)=>{
+    if (err) {
+      res.status(500).json({ error: "An error occurred while processing your request" });
+      return;
+    }
+    res.json(result);
+});
+
+
+
+  // const currentDate = new Date();
+  // const day = currentDate.getDate();
+  // const month = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
+  // const year = currentDate.getFullYear();
+  // const formattedDate = `${year}-${month}-${day}`;
+  // console.log(formattedDate);
   
-  const sql = 'select * from image where username = ?';
-  conn.query(sql,[username],(err, result)=>{
-      //res.json(result);
-      const sql = 'select * from vote where day >= ?';
-      conn.query(sql,[formattedYesterday],(err, result)=>{
-          res.json(result);
-      })
-  })
-})
+  // const sql = "SELECT * FROM vote where day = ? ORDER BY score_day DESC LIMIT 10";
+  // conn.query(sql,[formattedDate],(err, result)=>{
+  //   if (err) {
+  //     res.status(500).json({ error: "An error occurred while processing your request" });
+  //     return;
+  //   }
+
+  //   const imagePromises = result.map((row: { id_image: any; }) => {
+  //     return new Promise((resolve, reject) => {
+  //       const imageSql = "SELECT * FROM image WHERE id_image = ?";
+  //       conn.query(imageSql, [row.id_image], (imageErr, imageResult) => {
+  //         if (imageErr) {
+  //           reject(imageErr);
+  //           return;
+  //         }
+  //         resolve(imageResult);
+  //       });
+  //     });
+  //   });
+
+  //   Promise.all(imagePromises)
+  //     .then(imageResults => {
+  //       const finalResult = result.map((row: any, index: number) => {
+  //         return {
+  //           ...row,
+  //           image: imageResults[index]
+  //         };
+  //       });
+  //       res.json(finalResult);
+  //     })
+  //     .catch(err => {
+  //       res.status(500).json({ error: "An error occurred while processing your request" });
+  //     });
+  // });
+});
+
+// router.get("/score/seven",(req,res) =>{
+//   const username = req.query.username;
+//   console.log(username);
+  
+//   const yesterday = new Date();
+//   yesterday.setDate(yesterday.getDate() - 7);
+//   const yesterdayDay = yesterday.getDate();
+//   console.log(yesterdayDay);
+//   const yesterdayMonth = yesterday.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
+//   const yesterdayYear = yesterday.getFullYear();
+//   const formattedYesterday = `${yesterdayYear}-${yesterdayMonth}-${yesterdayDay}`;
+
+//   const currentDate = new Date();
+//   const day = currentDate.getDate();
+//   const month = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
+//   const year = currentDate.getFullYear();
+//   const formattedDate = `${year}-${month}-${day}`;
+//   console.log(formattedDate);
+  
+//   const sql = 'SELECT * FROM vote JOIN image ON vote.id_image = image.id_image JOIN user ON image.username = user.username where user.username = ? ORDER BY image.id_image';
+//   conn.query(sql,[username],(err, result)=>{
+//       //res.json(result);
+//       // const sql = 'select * from image,vote where vote.day >= ?';
+//       // conn.query(sql,[formattedYesterday, result.id_image],(err, result)=>{
+//           res.json(result);
+//           console.log(result);
+          
+//       // })
+//   })
+// });
+
+router.get("/score/seven",(req,res) =>{
+  const username = req.query.username;
+  console.log(username);
+  
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 7);
+  const yesterdayDay = yesterday.getDate();
+  console.log(yesterdayDay);
+  const yesterdayMonth = yesterday.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
+  const yesterdayYear = yesterday.getFullYear();
+  const formattedYesterday = `${yesterdayYear}-${yesterdayMonth}-${yesterdayDay}`;
+
+  const currentDate = new Date();
+  const day = currentDate.getDate();
+  const month = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
+  const year = currentDate.getFullYear();
+  const formattedDate = `${year}-${month}-${day}`;
+  console.log(formattedDate);
+  
+  const sql: string = 'SELECT * FROM vote JOIN image ON vote.id_image = image.id_image JOIN user ON image.username = user.username where user.username = ? ORDER BY image.id_image';
+  conn.query(sql,[username],(err, results) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Internal Server Error');
+        return;
+      }
+      
+      res.json(results);
+      console.log(results);
+
+      // const mergedResults:any = {};
+
+      // results.forEach((row: { id_image: number; }) => {
+      //   const id_image = row.id_image;
+      //   if (!mergedResults[id_image]) {
+      //     mergedResults[id_image] = [];
+      //   }
+      //   mergedResults[id_image].push(row);
+      // });
+      // console.log(mergedResults);
+      // res.json(mergedResults);
+  });
+});
+
+
 
 
 router.get("/topten/yesterday",(req,res) => {
