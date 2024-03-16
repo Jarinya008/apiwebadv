@@ -495,9 +495,9 @@ router.get('/look/diff/top', (req, res) => {
           }
 
           // คำนวณหาความแตกต่างในอันดับระหว่างวันก่อนหน้าและวันปัจจุบัน
-          const rankingsDiff: { id_image: any; score_day: number; diff: number | null; rank_previous: number; rank_current: number }[] = [];
-          afterResults.forEach((afterItem: { id_image: any; score_day: number; }, index: number) => {
-              const beforeIndex = beforeResults.findIndex((item: { id_image: any; }) => item.id_image === afterItem.id_image);
+          const rankingsDiff: { id_image: number; score_day: number; diff: number | null; rank_previous: number; rank_current: number }[] = [];
+          afterResults.forEach((afterItem: { id_image: number; score_day: number; }, index: number) => {
+              const beforeIndex = beforeResults.findIndex((item: { id_image: number; }) => item.id_image === afterItem.id_image);
               const rank_previous = beforeIndex !== -1 ? beforeIndex + 1 : null;
               const rank_current = index + 1;
               const diff = rank_previous !== null ? rank_previous - rank_current : null;
