@@ -48,7 +48,7 @@ if(point1 == 1){
             const year = currentDate.getFullYear();
             const formattedDate = `${year}-${month}-${day}`;
             console.log(formattedDate);
-            conn.query("SELECT day FROM vote WHERE day = ? AND id_image = ?",[formattedDate, results1[0].id_image],(error, results3) => {
+            conn.query("SELECT day FROM vote WHERE day = CURDATE() AND id_image = ?",[results1[0].id_image],(error, results3) => {
               if (error) {
                 return res.status(500).json({ error: "An error occurred while fetching image1" });
               }else{
@@ -89,7 +89,7 @@ if(point1 == 1){
                 
 
 
-                conn.query("SELECT day FROM vote WHERE day = ? AND id_image = ?",[formattedDate, results2[0].id_image],(error, results4) => {
+                conn.query("SELECT day FROM vote WHERE day = CURDATE() AND id_image = ?",[results2[0].id_image],(error, results4) => {
                   if (error) {
                     return res.status(500).json({ error: "An error occurred while fetching image1" });
                   }else{
@@ -160,7 +160,7 @@ if(point1 == 1){
               const year = currentDate.getFullYear();
               const formattedDate = `${year}-${month}-${day}`;
               console.log(formattedDate);
-              conn.query("SELECT day FROM vote WHERE day = ? AND id_image = ?",[formattedDate, results2[0].id_image],(error, results3) => {
+              conn.query("SELECT day FROM vote WHERE day = CURDATE() AND id_image = ?",[results2[0].id_image],(error, results3) => {
                 if (error) {
                   return res.status(500).json({ error: "An error occurred while fetching image1" });
                 }else{
@@ -201,7 +201,7 @@ if(point1 == 1){
                   
   
   
-                  conn.query("SELECT day FROM vote WHERE day = ? AND id_image = ?",[formattedDate, results1[0].id_image],(error, results4) => {
+                  conn.query("SELECT day FROM vote WHERE day = CURDATE() AND id_image = ?",[results1[0].id_image],(error, results4) => {
                     if (error) {
                       return res.status(500).json({ error: "An error occurred while fetching image1" });
                     }else{
