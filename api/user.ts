@@ -295,13 +295,15 @@ router.get("/score/seven",(req,res) =>{
 const lastSevenDaysDate: Date = new Date();
 lastSevenDaysDate.setDate(lastSevenDaysDate.getDate() - 7);
 
-const query: string = `
-             SELECT image.id_image, image.date, image.score_image, image.url_image, image.name_image, vote.day, vote.score_day
-             FROM vote
-             INNER JOIN image ON vote.id_image = image.id_image 
-             WHERE vote.day >= ? AND image.username = ? 
-             ORDER BY image.id_image, vote.day`;
-conn.query(query, [lastSevenDaysDate, username], (err: any, results: any) => {
+// const query: string = `
+//              SELECT image.id_image, image.date, image.score_image, image.url_image, image.name_image, vote.day, vote.score_day
+//              FROM vote
+//              INNER JOIN image ON vote.id_image = image.id_image 
+//              WHERE vote.day >= ? AND image.username = ? 
+//              ORDER BY image.id_image, vote.day`;
+const query: string ="SELECT * FROM vote JOIN image ON vote.id_image = image.id_image JOIN user ON image.username = user.username where user.username = ? and day = ? ORDER BY image.id_image, vote.day";
+             
+conn.query(query, [username,lastSevenDaysDate], (err: any, results: any) => {
     if (err) {
         console.error(err);
         return res.status(500).json({ error: 'Error fetching votes' });
