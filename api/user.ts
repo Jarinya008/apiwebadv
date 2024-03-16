@@ -146,7 +146,7 @@ console.log(formattedYesterday);
 
 router.get("/topten/today",(req,res) => {
   const currentDate = new Date();
-  const day = currentDate.getDate();
+  const day = currentDate.getDate()+1;
   const month = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
   const year = currentDate.getFullYear();
   const formattedDate = `${year}-${month}-${day}`;
