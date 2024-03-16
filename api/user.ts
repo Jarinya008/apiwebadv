@@ -294,43 +294,42 @@ router.get("/score/seven",(req,res) =>{
 
   try {
     const username: string = (req.params as { username: string }).username;
-    const lastSevenDaysDate: Date = new Date();
-    lastSevenDaysDate.setDate(lastSevenDaysDate.getDate() - 7);
+const lastSevenDaysDate: Date = new Date();
+lastSevenDaysDate.setDate(lastSevenDaysDate.getDate() - 7);
+
+const query: string = `
+             SELECT image.id_image, image.date, image.score_image, image.url_image, image.name_image, vote.day, vote.score_day
+             FROM vote 
+             INNER JOIN image ON vote.id_image = image.id_image 
+             WHERE vote.day >= ? AND image.username = ? 
+             ORDER BY image.id_image, vote.day`;
+conn.query(query, [lastSevenDaysDate, username], (err: any, results: any) => {
+    if (err) {
+        console.error(err);
+        return res.status(500).json({ error: 'Error fetching votes' });
+    }
     
-    const query: string = `
-                 SELECT image.id_image, image.date, image.score_image, image.url_image, image.name_image, user.username, vote.day, vote.score_day
-                 FROM vote 
-                 INNER JOIN image ON vote.id_image = image.id_image 
-                 INNER JOIN user ON image.username = user.username
-                 WHERE vote.day >= ? AND user.username = ? 
-                 ORDER BY image.id_image, vote.day`;
-    conn.query(query, [lastSevenDaysDate, username], (err: any, results: any) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: 'Error fetching votes' });
+    const imageStatistics: any[] = [];
+    let currentImage: any = null;
+    
+    for (const row of results) {
+        if (!currentImage || currentImage.id_image !== row.id_image) {
+            currentImage = {
+                id_image: row.id_image,
+                date: row.date,
+                score_image: row.score_image,
+                url_image: row.url_image,
+                name_image: row.name_image,
+                vote: [] 
+            };
+            imageStatistics.push(currentImage);
         }
-        
-        const imageStatistics: any[] = [];
-        let currentImage: any = null;
-        
-        for (const row of results) {
-            if (!currentImage || currentImage.id_image !== row.id_image) {
-                currentImage = {
-                    id_image: row.id_image,
-                    date: row.date,
-                    score_image: row.score_image,
-                    username: row.username,
-                    url_image: row.url_image,
-                    name_image: row.name_image,
-                    vote: [] 
-                };
-                imageStatistics.push(currentImage);
-            }
-            currentImage.vote.push({ day: row.day, score_day: row.score_day });
-        }
-        console.log(imageStatistics);
-        res.json(imageStatistics);
-    });
+        currentImage.vote.push({ day: row.day, score_day: row.score_day });
+    }
+    console.log(imageStatistics);
+    res.json(imageStatistics);
+});
+
 } catch (error) {
     console.error("Error fetching image statistics:", error);
     res.status(500).json({ error: "Failed to fetch image statistics" });
