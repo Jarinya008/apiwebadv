@@ -335,6 +335,8 @@ router.get("/score/seven",(req,res) =>{
             currentImage.Votes.push({ day: row.day, score_day: row.score_day });
         }
         // ส่งข้อมูลอาร์เรย์ที่ได้กลับไป
+        console.log(imageStatistics);
+        
         res.json(imageStatistics);
     });
 } catch (error) {
