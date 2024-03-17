@@ -133,7 +133,7 @@ if(point1 == 1){
           }
         });
     });
-  } else if(point2 == 1){
+  } else{
     conn.query(
       "SELECT * FROM image WHERE id_image = ?",
       [id_image1],
@@ -167,8 +167,7 @@ if(point1 == 1){
                   //console.log('re3 = '+results3.length);
                   if(results3.length == 0){
                     const sql = "INSERT INTO `vote` (`id_image`, `score_day`, `day`) VALUES (?, ?, CURDATE())";
-                    conn.query(sql,[id_image2, rpb],
-                      (err, result) => {
+                    conn.query(sql,[id_image2, rpb],(err, result) => {
                         if (err) {
                           console.error("Error inserting user:", err);
                           res.status(500).json({ error: "Error inserting user" });
