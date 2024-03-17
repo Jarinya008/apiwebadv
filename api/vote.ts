@@ -133,7 +133,7 @@ if(point1 == 1){
           }
         });
     });
-  } else{
+  } else if(point2 == 1){
     conn.query(
       "SELECT * FROM image WHERE id_image = ?",
       [id_image1],
