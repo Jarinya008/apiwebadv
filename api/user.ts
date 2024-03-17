@@ -314,10 +314,10 @@ conn.query(query, [username,formattedYesterday], (err: any, results: any) => {
     }
     
     const imageStatistics: any[] = [];
-    let currentImage: any = null;
+    let currentImage: any = null;  //ภาพที่จะตรวจสอบ
     
     for (const row of results) {
-        if (!currentImage || currentImage.id_image !== row.id_image) {
+        if (!currentImage || currentImage.id_image !== row.id_image) { //ถ้าไม่ใช้รูปปัจจุบันก็จะสร้างobjectขึ้นมาใหม่แบบนี้
             currentImage = {
                 id_image: row.id_image,
                 date: row.date,
@@ -495,11 +495,11 @@ router.get('/look/diff/top', (req, res) => {
           }
 
           // คำนวณหาความแตกต่างในอันดับระหว่างวันก่อนหน้าและวันปัจจุบัน
-          const rankingsDiff: { id_image: number; score_day: number; diff: number | null; rank_previous: number; rank_current: number }[] = [];
-          afterResults.forEach((afterItem: { id_image: number; score_day: number; }, index: number) => {
-              const beforeIndex = beforeResults.findIndex((item: { id_image: number; }) => item.id_image === afterItem.id_image);
-              const rank_previous = beforeIndex !== -1 ? beforeIndex + 1 : null;
-              const rank_current = index + 1;
+          const rankingsDiff: { id_image: number; score_day: number; diff: number | null; rank_previous: number; rank_current: number }[] = [];  //เก็บข้อมูลผลต่าง
+          afterResults.forEach((afterItem: { id_image: number; score_day: number; }, index: number) => { //วนloopผ่านทุกรายการของafterResults
+              const beforeIndex = beforeResults.findIndex((item: { id_image: number; }) => item.id_image === afterItem.id_image);  //ค้นหาว่ารายการที่เป็นปัจจุบันนั้นมีอยู่ใน beforeResults มั้ย
+              const rank_previous = beforeIndex !== -1 ? beforeIndex + 1 : null;  //indexของbeforeResults
+              const rank_current = index + 1; //indexปัจจุบันของafterResults
               const diff = rank_previous !== null ? rank_previous - rank_current : null;
               rankingsDiff.push({ id_image: afterItem.id_image, score_day: afterItem.score_day, diff, rank_previous, rank_current });
           });
