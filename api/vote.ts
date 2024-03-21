@@ -70,8 +70,8 @@ if(point1 == 1){
                       }                
                   });
                 }else{
-                  const sql = "UPDATE `vote` SET `score_day`= ? WHERE `id_image`= ? AND day = ?";
-                  conn.query(sql,[rpa, id_image1,formattedDate],(err, result) => {
+                  const sql = "UPDATE `vote` SET `score_day`= ? WHERE `id_image`= ? AND day = CURDATE()";
+                  conn.query(sql,[rpa, id_image1],(err, result) => {
                       if (err) {
                         console.error("Error inserting user:", err);
                         res.status(500).json({ error: "Error inserting user" });
@@ -181,8 +181,8 @@ if(point1 == 1){
                         }                
                     });
                   }else{
-                    const sql = "UPDATE `vote` SET `score_day`= ? WHERE `id_image`= ? AND day = ?";
-                    conn.query(sql,[rpb, id_image2,formattedDate],(err, result) => {
+                    const sql = "UPDATE `vote` SET `score_day`= ? WHERE `id_image`= ? AND day = CURDATE()";
+                    conn.query(sql,[rpb, id_image2],(err, result) => {
                         if (err) {
                           console.error("Error inserting user:", err);
                           res.status(500).json({ error: "Error inserting user" });
