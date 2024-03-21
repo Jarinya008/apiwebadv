@@ -48,13 +48,13 @@ if(point1 == 1){
             const year = currentDate.getFullYear();
             const formattedDate = `${year}-${month}-${day}`;
             console.log(formattedDate);
-            conn.query("SELECT day FROM vote WHERE day = CURDATE() AND id_image = ?",[results1[0].id_image],(error, results3) => {
+            conn.query("SELECT day FROM vote WHERE day = DATE(NOW()) AND id_image = ?",[results1[0].id_image],(error, results3) => {
               if (error) {
                 return res.status(500).json({ error: "An error occurred while fetching image1" });
               }else{
                 //console.log('re3 = '+results3.length);
                 if(results3.length == 0){
-                  const sql = "INSERT INTO `vote` (`id_image`, `score_day`, `day`) VALUES (?, ?, CURDATE())";
+                  const sql = "INSERT INTO `vote` (`id_image`, `score_day`, `day`) VALUES (?, ?, DATE(NOW()))";
                   conn.query(sql,[id_image1, rpa],
                     (err, result) => {
                       if (err) {
@@ -70,8 +70,8 @@ if(point1 == 1){
                       }                
                   });
                 }else{
-                  const sql = "UPDATE `vote` SET `score_day`= ? WHERE `id_image`= ? AND day = ?";
-                  conn.query(sql,[rpa, id_image1,formattedDate],(err, result) => {
+                  const sql = "UPDATE `vote` SET `score_day`= ? WHERE `id_image`= ? AND day = DATE(NOW())";
+                  conn.query(sql,[rpa, id_image1],(err, result) => {
                       if (err) {
                         console.error("Error inserting user:", err);
                         res.status(500).json({ error: "Error inserting user" });
@@ -89,7 +89,7 @@ if(point1 == 1){
                 
 
 
-                conn.query("SELECT day FROM vote WHERE day = CURDATE() AND id_image = ?",[results2[0].id_image],(error, results4) => {
+                conn.query("SELECT day FROM vote WHERE day = DATE(NOW()) AND id_image = ?",[results2[0].id_image],(error, results4) => {
                   if (error) {
                     return res.status(500).json({ error: "An error occurred while fetching image1" });
                   }else{
@@ -160,13 +160,13 @@ if(point1 == 1){
               const year = currentDate.getFullYear();
               const formattedDate = `${year}-${month}-${day}`;
               console.log(formattedDate);
-              conn.query("SELECT day FROM vote WHERE day = CURDATE() AND id_image = ?",[results2[0].id_image],(error, results3) => {
+              conn.query("SELECT day FROM vote WHERE day = DATE(NOW()) AND id_image = ?",[results2[0].id_image],(error, results3) => {
                 if (error) {
                   return res.status(500).json({ error: "An error occurred while fetching image1" });
                 }else{
                   //console.log('re3 = '+results3.length);
                   if(results3.length == 0){
-                    const sql = "INSERT INTO `vote` (`id_image`, `score_day`, `day`) VALUES (?, ?, CURDATE())";
+                    const sql = "INSERT INTO `vote` (`id_image`, `score_day`, `day`) VALUES (?, ?, DATE(NOW()))";
                     conn.query(sql,[id_image2, rpb],(err, result) => {
                         if (err) {
                           console.error("Error inserting user:", err);
@@ -181,8 +181,8 @@ if(point1 == 1){
                         }                
                     });
                   }else{
-                    const sql = "UPDATE `vote` SET `score_day`= ? WHERE `id_image`= ? AND day = ?";
-                    conn.query(sql,[rpb, id_image2,formattedDate],(err, result) => {
+                    const sql = "UPDATE `vote` SET `score_day`= ? WHERE `id_image`= ? AND day = DATE(NOW())";
+                    conn.query(sql,[rpb, id_image2],(err, result) => {
                         if (err) {
                           console.error("Error inserting user:", err);
                           res.status(500).json({ error: "Error inserting user" });
@@ -200,7 +200,7 @@ if(point1 == 1){
                   
   
   
-                  conn.query("SELECT day FROM vote WHERE day = CURDATE() AND id_image = ?",[results1[0].id_image],(error, results4) => {
+                  conn.query("SELECT day FROM vote WHERE day = DATE(NOW()) AND id_image = ?",[results1[0].id_image],(error, results4) => {
                     if (error) {
                       return res.status(500).json({ error: "An error occurred while fetching image1" });
                     }else{
