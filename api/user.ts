@@ -314,6 +314,7 @@ conn.query(query, [username,formattedYesterday], (err: any, results: any) => {
         if (!currentImage || currentImage.id_image !== row.id_image) { //ถ้าไม่ใช้รูปปัจจุบันก็จะสร้างobjectขึ้นมาใหม่แบบนี้
             currentImage = {
                 username: row.image.username,
+                image_avatar: row.user.image_avatar,
                 id_image: row.id_image,
                 date: row.date,
                 score_image: row.score_image,
