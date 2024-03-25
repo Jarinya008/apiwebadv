@@ -47,7 +47,7 @@ if(point1 == 1){
             const month = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
             const year = currentDate.getFullYear();
             const formattedDate = `${year}-${month}-${day}`;
-            console.log(formattedDate);
+            //console.log(formattedDate);
             conn.query("SELECT day FROM vote WHERE day = CURDATE() AND id_image = ?",[results1[0].id_image],(error, results3) => {
               if (error) {
                 return res.status(500).json({ error: "An error occurred while fetching image1" });
@@ -159,7 +159,7 @@ if(point1 == 1){
               const month = currentDate.getMonth() + 1; // เพิ่ม 1 เนื่องจากเดือนเริ่มที่ 0
               const year = currentDate.getFullYear();
               const formattedDate = `${year}-${month}-${day}`;
-              console.log(formattedDate);
+              //console.log(formattedDate);
               conn.query("SELECT day FROM vote WHERE day = CURDATE() AND id_image = ?",[results2[0].id_image],(error, results3) => {
                 if (error) {
                   return res.status(500).json({ error: "An error occurred while fetching image1" });
