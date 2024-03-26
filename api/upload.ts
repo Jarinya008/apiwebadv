@@ -8,6 +8,9 @@ import { Constants } from '../config/constants';
 import mysql from "mysql"; 
 export const router = express.Router();
 
+
+
+
 class FileMiddleware {
   filename = "";
   public readonly diskLoader = multer({
@@ -68,6 +71,7 @@ router.post("/", fileUpload.diskLoader.single("url_image"), (req, res) => {
       res.status(201).json({ affected_row: result.affectedRows });
     }
   });
+
 });
 
 router.put("/", fileUpload.diskLoader.single("url_image"), (req, res) => {
@@ -87,68 +91,6 @@ router.put("/", fileUpload.diskLoader.single("url_image"), (req, res) => {
   });
 });
 
-// router.put("updateavatar/:username",fileUpload.diskLoader.single("image_avatar"), async(req,res)=>{
-//   const image_avatar = "/uploads/" + fileUpload.filename;
-//   //receive data
-//   const usernam = +req.params.usernam;
-//   const user : UserGet = req.body;
-//   //get original data from table by id
-//   let sql = "select * from user where username = ?";
-//   sql = mysql.format(sql,[usernam]);
-
-//   //query and wait for result
-//   const result = await queryAsync(sql);
-//   const jsonStr = JSON.stringify(result);
-//   const jsonObj = JSON.parse(jsonStr);
-//   console.log(JSON.stringify(result));
-//   const userOriginal : UserGet = jsonObj[0];
-//   const updateUser = {...userOriginal, ...user};
-
-//   sql =
-//       "update  `user` set `username`=?, `image_avatar`=?, `password`=?, `type`=?";
-//     sql = mysql.format(sql, [
-//       updateUser.username,
-//       image_avatar,
-//       updateUser.password,
-//       updateUser.type
-//     ]);
-//     conn.query(sql, (err, result) => {
-//       if (err) throw err;
-//       res.status(201).json({ affected_row: result.affectedRows });
-//     });
-// })
-
-// router.put("/updateavatar/:username", fileUpload.diskLoader.single("image_avatar"), async (req, res) => {
-//   const image_avatar = "/uploads/" + fileUpload.filename;
-//   // receive data
-//   const username = req.params.username; // corrected variable name
-//   const user = req.body;
-
-//   // get original data from table by username
-//   let sql = "SELECT * FROM user WHERE username = ?";
-//   sql = mysql.format(sql, [username]);
-
-//   // query and wait for result
-//   conn.query(sql, async (err, result) => {
-//     if (err) throw err;
-
-//     const userOriginal = result[0];
-//     const updateUser = { ...userOriginal, ...user };
-
-//     sql = "UPDATE `user` SET `username`=?, `image_avatar`=?, `password`=?, `type`=?";
-//     sql = mysql.format(sql, [
-//       username,
-//       image_avatar,
-//       updateUser.password,
-//       updateUser.type
-//     ]);
-
-//     conn.query(sql, (err, result) => {
-//       if (err) throw err;
-//       res.status(201).json({ affected_row: result.affectedRows });
-//     });
-//   });
-// });
 
 http://localhost:3000/upload/updateavatar/ตามด้วยusername
 router.put("/updateavatar/:username", fileUpload.diskLoader.any(), async (req, res) => {

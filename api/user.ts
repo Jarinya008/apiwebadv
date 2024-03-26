@@ -313,8 +313,8 @@ conn.query(query, [username,formattedYesterday], (err: any, results: any) => {
     for (const row of results) {
         if (!currentImage || currentImage.id_image !== row.id_image) { //ถ้าไม่ใช้รูปปัจจุบันก็จะสร้างobjectขึ้นมาใหม่แบบนี้
             currentImage = {
-                username: row.image.username,
-                image_avatar: row.user.image_avatar,
+                username: row.username,
+                image_avatar: row.image_avatar,
                 id_image: row.id_image,
                 date: row.date,
                 score_image: row.score_image,
