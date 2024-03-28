@@ -130,12 +130,19 @@ router.put("/", fileUpload.diskLoader.single("url_image"), (req, res) => {
 
 http://localhost:3000/upload/updateavatar/ตามด้วยusername
 router.put("/updateavatar/:username",fileUpload.diskLoader.single("url_image"), async (req, res) => {
-  const image_avatar = "/uploads/" + fileUpload.filename;
+  const filename = Date.now() + "-" + Math.round(Math.random() * 1000) + ".png";
+  const storageRef = ref(storage, "/image/" + filename);
+  const metadata = { contentType: req.file!.mimetype };
+  const snapshot = await uploadBytesResumable(storageRef, req.file!.buffer, metadata);
+  const url = await getDownloadURL(snapshot.ref);
+
+  // บันทึกรูปภาพลงใน Firebase Storage และรับ URL ของรูปภาพ
+  const url_image = url;
   const username = req.params.username;
 
   // Update only the image_avatar field
   let sql = "UPDATE `user` SET `image_avatar`=? WHERE `username`=?";
-  sql = mysql.format(sql, [image_avatar, username]);
+  sql = mysql.format(sql, [url_image, username]);
 
   conn.query(sql, (err, result) => {
     if (err) throw err;
