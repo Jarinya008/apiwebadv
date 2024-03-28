@@ -91,7 +91,8 @@ router.post("/", fileUpload.diskLoader.single("url_image"), async (req, res) => 
 
   // บันทึกรูปภาพลงใน Firebase Storage และรับ URL ของรูปภาพ
   const url_image = url;
-
+  console.log(url_image);
+  
   
   //const escapedUrlImage: string = escape(url_image);
 
