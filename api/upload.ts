@@ -80,16 +80,16 @@ const fileUpload = new FileMiddleware();
 // import ฟังก์ชัน escapeString จากไลบรารี sqlstring
 
 router.post("/", fileUpload.diskLoader.single("url_image"), async (req, res) => {
-  const url_image = res.json({ filename: "/uploads/" + fileUpload.filename });
-  url_image.toString();
+  //const url_image = res.json({ filename: "/uploads/" + fileUpload.filename });
+  //url_image.toString();
   const filename = Date.now() + "-" + Math.round(Math.random() * 1000) + ".png";
-  const storageRef = ref(storage, "/image/" + url_image);
+  const storageRef = ref(storage, "/image/" + filename);
   const metadata = { contentType: req.file!.mimetype };
   const snapshot = await uploadBytesResumable(storageRef, req.file!.buffer, metadata);
   const url = await getDownloadURL(snapshot.ref);
 
   // บันทึกรูปภาพลงใน Firebase Storage และรับ URL ของรูปภาพ
-  const Photo = url;
+  const url_image = url;
 
   
   //const escapedUrlImage: string = escape(url_image);
@@ -97,7 +97,7 @@ router.post("/", fileUpload.diskLoader.single("url_image"), async (req, res) => 
   let User: ImageGet = req.body;
   const currentDate = new Date().toISOString();
   const sql = "INSERT INTO `image` (username,url_image,name_image, date) VALUES (?, ?, ?, NOW())";
-  conn.query(sql, [User.username, Photo, User.name_image], (err, result) => {
+  conn.query(sql, [User.username, url_image, User.name_image], (err, result) => {
     if (err) {
       console.error('Error inserting user:', err);
       res.status(500).json({ error: 'Error inserting user' });
