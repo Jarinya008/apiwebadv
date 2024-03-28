@@ -80,16 +80,18 @@ const fileUpload = new FileMiddleware();
 // import ฟังก์ชัน escapeString จากไลบรารี sqlstring
 
 router.post("/", fileUpload.diskLoader.single("url_image"), async (req, res) => {
+  const url_image = res.json({ filename: "/uploads/" + fileUpload.filename });
+  url_image.toString();
   const filename = Date.now() + "-" + Math.round(Math.random() * 1000) + ".png";
-  const storageRef = ref(storage, "/image/" + filename);
+  const storageRef = ref(storage, "/image/" + url_image);
   const metadata = { contentType: req.file!.mimetype };
   const snapshot = await uploadBytesResumable(storageRef, req.file!.buffer, metadata);
   const url = await getDownloadURL(snapshot.ref);
 
   // บันทึกรูปภาพลงใน Firebase Storage และรับ URL ของรูปภาพ
-  const Photo = url + fileUpload.filename;
+  const Photo = url;
 
-  const url_image = "/uploads/" + fileUpload.filename;
+  
   //const escapedUrlImage: string = escape(url_image);
 
   let User: ImageGet = req.body;
