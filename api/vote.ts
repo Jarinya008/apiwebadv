@@ -93,39 +93,12 @@ if(point1 == 1){
                   if (error) {
                     return res.status(500).json({ error: "An error occurred while fetching image1" });
                   }else{
-                    //console.log('re3 = '+results3.length);
-                    // if(results4.length == 0){
-                      // const sql = "INSERT INTO `vote` (`id_image`, `score_day`, `day`) VALUES (?, ?, ?)";
-                      // conn.query(sql,[id_image2, rpb, formattedDate],
-                      //   (err, result) => {
-                      //     if (err) {
-                      //       console.error("Error inserting user:", err);
-                      //       res.status(500).json({ error: "Error inserting user" });
-                      //     } else {  
-                      //       const sql ="UPDATE `image` SET `score_image`= ? WHERE `id_image`= ?";conn.query(sql, [rpb, id_image2], (err, result) => {
-                      //         if (err) {
-                      //           console.error("Error inserting user:", err);
-                      //           return res.status(500).json({ error: "Error inserting user" });
-                      //         }
-                      //       });
-                      //     }                
-                      // });
-                    // }else{
-                    //   const sql = "UPDATE `vote` SET `score_day`= ? WHERE `id_image`= ? AND day = ?";
-                    //   conn.query(sql,[rpb, id_image2,formattedDate],(err, result) => {
-                    //       if (err) {
-                    //         console.error("Error inserting user:", err);
-                    //         res.status(500).json({ error: "Error inserting user" });
-                    //       } else {  
                             const sql ="UPDATE `image` SET `score_image`= ? WHERE `id_image`= ?";conn.query(sql, [rpb, id_image2], (err, result) => {
                               if (err) {
                                 console.error("Error inserting user:", err);
                                 return res.status(500).json({ error: "Error inserting user" });
                               }
                             });
-                    //       }                
-                    //   });
-                    // }
                    }
                 });
               }
@@ -204,39 +177,12 @@ if(point1 == 1){
                     if (error) {
                       return res.status(500).json({ error: "An error occurred while fetching image1" });
                     }else{
-                      //console.log('re3 = '+results3.length);
-                      // if(results4.length == 0){
-                        // const sql = "INSERT INTO `vote` (`id_image`, `score_day`, `day`) VALUES (?, ?, ?)";
-                        // conn.query(sql,[id_image2, rpb, formattedDate],
-                        //   (err, result) => {
-                        //     if (err) {
-                        //       console.error("Error inserting user:", err);
-                        //       res.status(500).json({ error: "Error inserting user" });
-                        //     } else {  
-                        //       const sql ="UPDATE `image` SET `score_image`= ? WHERE `id_image`= ?";conn.query(sql, [rpb, id_image2], (err, result) => {
-                        //         if (err) {
-                        //           console.error("Error inserting user:", err);
-                        //           return res.status(500).json({ error: "Error inserting user" });
-                        //         }
-                        //       });
-                        //     }                
-                        // });
-                      // }else{
-                      //   const sql = "UPDATE `vote` SET `score_day`= ? WHERE `id_image`= ? AND day = ?";
-                      //   conn.query(sql,[rpb, id_image2,formattedDate],(err, result) => {
-                      //       if (err) {
-                      //         console.error("Error inserting user:", err);
-                      //         res.status(500).json({ error: "Error inserting user" });
-                      //       } else {  
                               const sql ="UPDATE `image` SET `score_image`= ? WHERE `id_image`= ?";conn.query(sql, [rpa, id_image1], (err, result) => {
                                 if (err) {
                                   console.error("Error inserting user:", err);
                                   return res.status(500).json({ error: "Error inserting user" });
                                 }
                               });
-                      //       }                
-                      //   });
-                      // }
                      }
                   });
                 }

@@ -6,28 +6,51 @@ import { ImageGet, UserGet } from "../model/user_get";
 import { escape } from 'sqlstring';
 import { Constants } from '../config/constants';
 import mysql from "mysql"; 
+
+import { initializeApp } from "firebase/app";
+import { getStorage,ref,uploadBytesResumable,getDownloadURL } from "firebase/storage";
 export const router = express.Router();
 
+const firebaseConfig = {
+  apiKey: "AIzaSyDKHFHiBhRag4Ll8Uv5F9P5zPwJSld6iBI",
+  authDomain: "projectwebadv.firebaseapp.com",
+  projectId: "projectwebadv",
+  storageBucket: "projectwebadv.appspot.com",
+  messagingSenderId: "436147540585",
+  appId: "1:436147540585:web:276b98b409232f187388f8",
+  measurementId: "G-TJCMRLGZ91"
+};
+
+initializeApp(firebaseConfig);
+const storage = getStorage();
 
 
 
 class FileMiddleware {
-  filename = "";
+  filename = "";  
+  
   public readonly diskLoader = multer({
-    storage: multer.diskStorage({
-      destination: (_req, _file, cb) => {
-        cb(null, path.join(__dirname, "../uploads"));
-      },
-      filename: (req, file, cb) => {
-        const uniqueSuffix =
-          Date.now() + "-" + Math.round(Math.random() * 10000);
-        this.filename = uniqueSuffix + "." + file.originalname.split(".").pop();
-        cb(null, this.filename);
-      },
-    }),
-    limits: {
-      fileSize: 67108864, // 64 MByte
-    },
+    //
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 67108864, // 64 MByte
+  },
+
+  // public readonly diskLoader = multer({
+  //   storage: multer.diskStorage({
+  //     destination: (_req, _file, cb) => {
+  //       cb(null, path.join(__dirname, "../uploads"));
+  //     },
+  //     filename: (req, file, cb) => {
+  //       const uniqueSuffix =
+  //         Date.now() + "-" + Math.round(Math.random() * 10000);
+  //       this.filename = uniqueSuffix + "." + file.originalname.split(".").pop();
+  //       cb(null, this.filename);
+  //     },
+  //   }),
+  //   limits: {
+  //     fileSize: 67108864, // 64 MByte
+  //   },
   });
 }
 
