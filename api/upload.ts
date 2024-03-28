@@ -129,7 +129,7 @@ router.put("/", fileUpload.diskLoader.single("url_image"), (req, res) => {
 
 
 http://localhost:3000/upload/updateavatar/ตามด้วยusername
-router.put("/updateavatar/:username", fileUpload.diskLoader.any(), async (req, res) => {
+router.put("/updateavatar/:username",fileUpload.diskLoader.single("url_image"), async (req, res) => {
   const image_avatar = "/uploads/" + fileUpload.filename;
   const username = req.params.username;
 
