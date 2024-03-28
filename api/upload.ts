@@ -81,7 +81,7 @@ const fileUpload = new FileMiddleware();
 
 router.post("/", fileUpload.diskLoader.single("url_image"), async (req, res) => {
   const filename = Date.now() + "-" + Math.round(Math.random() * 1000) + ".png";
-  const storageRef = ref(storage, "/images/" + filename);
+  const storageRef = ref(storage, "/image/" + filename);
   const metadata = { contentType: req.file!.mimetype };
   const snapshot = await uploadBytesResumable(storageRef, req.file!.buffer, metadata);
   const url = await getDownloadURL(snapshot.ref);
