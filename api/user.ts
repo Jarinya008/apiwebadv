@@ -43,6 +43,14 @@ router.get("/manage/yourimage", async (req, res)=>{
   });
 });
 
+router.get("/look/imageavatar", async (req, res)=>{
+  const username = req.query.username;
+  const sql = "select image_avatar from user WHERE username = ?";
+  conn.query(sql,[username],(err, result)=>{
+    res.json(result);
+  });
+});
+
 router.get("/yesterday/score", (req, res) => {
   const id_image = req.query.id_image;
 
